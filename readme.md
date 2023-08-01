@@ -21,18 +21,18 @@ A version that does not rely on Google Suite is available under my public reposi
 `PATH=$PATH:/location/to/installation/folder`
 
 6. Check if it was successfully added `echo $PATH`
-7. Make a shared directory in the root folder `sudo chmod 777 foldername`
+7. Make a shared directory in the root folder `sudo chmod 777 pingloi`
 8. Import the python code and move it to the shared directory 
-   `sudo mv main.py /path/to/shared/directory`
-8. Check if there are tmux sessions running `tmux ls`
-9. Enter the tmux session. Note that 0 may be changed
-   depending on the tmux session id number `tmux a -t 0`
+   `sudo mv main.py /pingloi`
+8. Check if there are tmux sessions under `/pingloi` directory
+9. Enter the shared tmux session `tmux -S /pingloi/shared-session attach-session` if it exists
 10. If there are no tmux sessions currently running,
-    create one by typing `tmux`
-11. Run the main code `python3 main.py`
-12. Confirm if the bot is successfully running
-    by waiting for a `Polling` message in the console
-13. Exit the SSH session
+    create a shared tmux session named shared-session using `tmux -S /pingloi/shared-session new-session`
+11. If you did not attach to the session automatically, follow instruction 9
+12. Run the main code `python3 main.py >> stdout.txt`
+13. Detach from the tmux session `ctrl + b` then press `d`
+14. Make the new folder accessible to all users `sudo chmod 777 /pingloi/shared-session`
+17. Exit the SSH terminal
 
 # How to stop/reset the bot:
 
@@ -43,11 +43,11 @@ A version that does not rely on Google Suite is available under my public reposi
 2. The `safe and recommended option` is to access the running code
    and stop it from the SSH terminal
 3. To do so, access the SSH terminal and navigate to the shared directory
-4. Check the running tmux sessions `tmux ls`
-6. Enter the chosen tmux session. Note that 0 may be changed
-   depending on the tmux session id number `tmux a -t 0`
+4. You may check the running tmux sessions (optional) under `/pingloi` directory
+6. Attach to the shared tmux session.  `tmux -S /pingloi/shared-session attach-session`
 7. Stop the code by pressing `ctrl + c` or `cmd + c`
-8. Run the code by typing `python3 main.py`
+8. Run the code by typing `python3 main.py >> stdout.txt`
+9. Detach from the tmux session `ctrl + b` then press `d`
    
 # How to edit the tags
 
