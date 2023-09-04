@@ -1,14 +1,12 @@
+#Currently running on: https://www.pythonanywhere.com/user/TheLasallian/files/home/TheLasallian/Pingloi_bot.py?edit
+
+
 from typing import Final
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
 import pandas as pd
 import re
-
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
 
 # ------------------- BOT DETAILS ------------------ #
 TOKEN: Final = os.getenv("TOKEN")
@@ -29,8 +27,11 @@ async def setup_tag_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def kasyaba_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
-    if update.message.reply_to_message:
-        text: str = update.message.reply_to_message.text
+    if (update.message.reply_to_message.text) or (update.message.reply_to_message.caption):
+        if update.message.reply_to_message.text:
+            text: str = update.message.reply_to_message.text
+        else:
+            text: str = update.message.reply_to_message.caption
         reply: str = ""
 
         paragraphs = text.split("\n\n")
@@ -98,7 +99,10 @@ def handle_response(text: str) -> str:
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     #check whether user is in group chat or private chat
     message_type: str = update.message.chat.type
-    text: str = update.message.text
+    if (update.message.text):
+        text: str = update.message.text
+    else:
+        text: str = update.message.caption
 
     print(f'User ({update.message.chat.id}) in {message_type}: "text"')
 
@@ -132,6 +136,7 @@ if __name__ == '__main__':
 
     #Messages
     app.add_handler(MessageHandler(filters.TEXT, handle_message))
+    app.add_handler(MessageHandler(filters.PHOTO, handle_message))
 
     #Errors
     app.add_error_handler(error)
