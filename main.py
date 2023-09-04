@@ -7,6 +7,7 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 
 import pandas as pd
 import re
+import os
 
 # ------------------- BOT DETAILS ------------------ #
 TOKEN: Final = os.getenv("TOKEN")
