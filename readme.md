@@ -6,6 +6,8 @@ for 24 hours max without resetting. The bot also relies on importing the `Google
 Thus, Google Suite must only be active when resetting the bot. A version that does not rely on Google Suite is available under 
 my public repository [Telegram-Ping-Bot-Prototype](https://github.com/Glinary/Telegram-Ping-Bot-Prototype).
 
+# Installation
+
 1. Connect using SSH to the VM `ssh -i \path\to\private_key host_name@public_ip`
 1. Install the following dependencies
 ``` 
