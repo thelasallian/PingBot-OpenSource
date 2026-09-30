@@ -391,7 +391,8 @@ Note that the user must be an admin to be able to use these commands.
 
 # ---------- MESSAGE HANDLER ---------- #
 
-async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not update.message:
+        return
 
     # --- AUTHENTICATOR --- #
     #check whether user is in group chat or private chat
@@ -403,12 +404,11 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
     # --- AUTHENTICATOR --- #
 
-    if (update.message.text):
-        text: str = update.message.text
-    else:
-        text: str = update.message.caption
+    text: str = update.message.text or update.message.caption or ""
+    if not text:
+        return
 
-    print(f'User ({update.message.chat.id}) in {message_type}: "text"')
+    print(f'User ({update.message.chat.id}) in {message_type}: {text!r}')
 
     #NOTE: if commented, bot does not have to be mentioned to work in a group
     '''
@@ -518,14 +518,8 @@ if __name__ == '__main__':
     app.add_handler(CommandHandler('kasyaba', kasyaba_command))
     app.add_handler(CommandHandler('help', help_command))
     
-    #Messages
-    app.add_handler(MessageHandler(filters.TEXT, handle_message))
-
-    #Photos
-    app.add_handler(MessageHandler(filters.PHOTO, handle_message))
-
-    #Attachments
-    app.add_handler(MessageHandler(filters.ATTACHMENT, handle_message))
+    # Messages, Photos, Attachments, and Captions
+    app.add_handler(MessageHandler(filters.TEXT | filters.CAPTION | filters.PHOTO | filters.ATTACHMENT, handle_message))
     
     # ERRORS
     app.add_error_handler(error)
